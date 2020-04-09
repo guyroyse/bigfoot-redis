@@ -1,8 +1,8 @@
-# Messing with Sasquatch
+# Coding with Sasquatch
 
-Herein are all the details you'll ned to load a bunch of bifoot sightings into a GeoSet with Redis.
+Herein are all the details you'll need to load a bunch of Bigfoot sightings into Redis.
 
-## Get Python with Sasquatch
+## Get Python
 
 You need a Python environment to make this all work. I used Python 3.8—the latest, greatest, and most updatest at the time of this writing. I also used `venv` to manage my environment.
 
@@ -28,7 +28,7 @@ Next, let's install all the dependencies. These are all listed in `requirements.
 
 Run that command, and you'll have all the dependencies nstalled and will be ready to run the code.
 
-## Data to Redis Commands with Sasquatch
+## Generate Redis Commands
 
 So, the data file we have isn't ready to load into Redis. We need to convert it to Redis commands so we can load it via redis-cli. So, let's generate a file with those commands in it.
 
@@ -36,7 +36,13 @@ This is as easy as running the following.
 
     $ python prepare.py
 
-This will generate a series of command to load Hashes with each sighting under a key of `bigfoot:sightings:report:<report_id>` and load our GeoSet with the location those sightings under the key `bigfoot:sightings:locations`. Each member of the GeoSet is named `report:<report_id>`. And, all the report IDs will be shoved into a Set at `bigfoot:sightings:ids`.
+This will generate a series of command to load Redis up with Bigfoot data:
+
+| Key                           | Data Type | What's in there?
+| ----------------------------- | --------- | ----------------
+| bigfoot:sightings:ids         | Set       | All of the report IDs in the form "report:<id>"
+| bigfoot:sightings:report:<id> | Hash      | Report data including id, title, date, observed, county, state, and classification.
+| bigfoot:sightings:locations   | GeoSet    | All of the locations of the sightings with a member of "report:<id>".
 
 When it runs, you should see something like this.
 
