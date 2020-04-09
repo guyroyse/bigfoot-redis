@@ -38,11 +38,11 @@ This is as easy as running the following.
 
 This will generate a series of command to load Redis up with Bigfoot data:
 
-| Key                           | Type   | What's in there?        |
-| ----------------------------- | ------ | ----------------------- |
-| bigfoot:sightings:ids         | Set    | All of the report IDs in the form "report:<id>". |
-| bigfoot:sightings:report:<id> | Hash   | Report data including id, title, date, observed, county, state, and classification. |
-| bigfoot:sightings:locations   | GeoSet | All of the locations of the sightings with a member of "report:<id>". |
+| Key                             | Type   | What's in there?        |
+| ------------------------------- | ------ | ----------------------- |
+| `bigfoot:sightings:ids`         | Set    | All of the report IDs in the form `report:<id>`. |
+| `bigfoot:sightings:report:<id>` | Hash   | Report data including id, title, date, observed, county, state, and classification. |
+| `bigfoot:sightings:locations`   | GeoSet | All of the locations of the sightings with a member of `report:<id>`. |
 
 When it runs, you should see something like this.
 
