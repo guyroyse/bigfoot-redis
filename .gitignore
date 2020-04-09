@@ -1,0 +1,4 @@
+.vscode
+venv/
+__pycache__/
+redis_bigfoot_commands.txt
