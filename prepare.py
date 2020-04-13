@@ -42,10 +42,9 @@ def main():
     print(title)
 
     ## write to the file
-    escaped_title = title.replace('\\', '\\\\').replace('"', '\\"')
-    escaped_observed = observed.replace('\\', '\\\\').replace('"', '\\"')
+    escaped_title = escape_string(title)
+    escaped_observed = escape_string(observed)
 
-    output_file.write(f"SADD {IDS_KEY} report:{id}\n")
     output_file.write(f"HSET {REPORTS_KEY}:{id} id {id} title \"{escaped_title}\" date \"{date}\" observed \"{escaped_observed}\" county \"{county}\" state \"{state}\" classification \"{classification}\"\n")
     output_file.write(f"GEOADD {LOCATIONS_KEY} {longitude} {latitude} report:{id}\n")
 
@@ -60,5 +59,8 @@ def remove_rows_with_null(data, column):
   data = data.drop(rows_to_drop)
   print(f"Dropped {rows_to_drop.size} rows where '{column}' is empty.")
   return data
+
+def escape_string(s):
+  return s.replace('\\', '\\\\').replace('"', '\\"')
 
 main()
