@@ -4,6 +4,9 @@ INPUT_FILE = 'bfro_reports_geocoded.csv'
 OUTPUT_FILE = 'redis_bigfoot_commands.txt'
 
 IDS_KEY = 'bigfoot:sightings:ids'
+COUNTY_KEY = 'bigfoot:sightings:county'
+STATE_KEY = 'bigfoot:sightings:state'
+CLASSIFICATION_KEY = 'bigfoot:sightings:classification'
 LOCATIONS_KEY = 'bigfoot:sightings:locations'
 REPORTS_KEY = 'bigfoot:sightings:report'
 
@@ -41,12 +44,19 @@ def main():
     # print a status
     print(title)
 
-    ## write to the file
+    ## escape the strings that need itq
     escaped_title = escape_string(title)
     escaped_observed = escape_string(observed)
 
+    # write out the indexes
+    output_file.write(f"SADD '{IDS_KEY}' {id}\n")
+    output_file.write(f"SADD '{COUNTY_KEY}:{county}' {id}\n")
+    output_file.write(f"SADD '{STATE_KEY}:{state}' {id}\n")
+    output_file.write(f"SADD '{CLASSIFICATION_KEY}:{classification}' {id}\n")
+
+    # write out the data
     output_file.write(f"HSET {REPORTS_KEY}:{id} id {id} title \"{escaped_title}\" date \"{date}\" observed \"{escaped_observed}\" county \"{county}\" state \"{state}\" classification \"{classification}\"\n")
-    output_file.write(f"GEOADD {LOCATIONS_KEY} {longitude} {latitude} report:{id}\n")
+    output_file.write(f"GEOADD {LOCATIONS_KEY} {longitude} {latitude} {id}\n")
 
   # all done!
   output_file.close()
